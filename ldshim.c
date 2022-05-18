@@ -4,10 +4,10 @@
 #include <stdlib.h>
 #include <limits.h>
 
-extern const char *__progname;
-
+// ld will be located at a relative path of ../lib/ld
 const char ld_path[] = {"/../lib/ld"};
-const char bin_path[] = {"/real"};
+// the dynamically linked binary that is shimmed will be located at ../dynbin/<binary name>
+const char dynbin_path[] = {"/../dynbin"};
 
 int main(int argc, char *argv[]) {
     int rc;
@@ -19,7 +19,7 @@ int main(int argc, char *argv[]) {
     // get the absolute path of this binary
     ssize_t self_len = readlink("/proc/self/exe", self, sizeof(self));
 
-    // extract the path of this executable, without the binary name
+    // extract the path of this binary, without the binary name
     strncpy(exe_path, self, sizeof(exe_path));
     char *delim = strrchr(exe_path, '/');
     *delim = '\0';
@@ -27,9 +27,9 @@ int main(int argc, char *argv[]) {
     // extract the name of this binary
     char *exe_name = strrchr(self, '/');
 
-    // assemble the path to the 'real' binary
-    // this is the path of this binary + the prefix + the name of this binary
-    rc = snprintf(exe, sizeof(exe), "%s%s%s", exe_path, bin_path, exe_name);
+    // assemble the path to the actual, dynamically linked binary that's being shimmed
+    // this is the path of this binary + the relative path to dynbin + the name of this binary
+    rc = snprintf(exe, sizeof(exe), "%s%s%s", exe_path, dynbin_path, exe_name);
     if (rc < 0) {
         return 1;
     }
@@ -50,7 +50,6 @@ int main(int argc, char *argv[]) {
     new_argv[argc+1] = NULL;
 
     // assemble the path to our ld 
-    // this is the path of this binary + ../lib/ld
     rc = snprintf(ld, sizeof(exe), "%s%s", exe_path, ld_path);
     if (rc < 0) {
         return 1;
