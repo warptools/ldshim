@@ -12,7 +12,7 @@ dynamically linked libraries in a package.
 
 However, the dynamic linker path is placed in the `.interp` section of the ELF header. This value *must be an absolute path*, so
 we cannot use the technique used for shared libraries! This problem is addressed with `ldshim`, which manually invokes the dynamic 
-linker from a relative path, preventing the system from using the ELF-specified dynamic linker. 
+linker from a relative path (`../lib/ld-linux-x86-64.so.2`), preventing the system from using the ELF-specified dynamic linker. 
 
 ## Building
 

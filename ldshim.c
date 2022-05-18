@@ -5,7 +5,7 @@
 #include <limits.h>
 
 // ld will be located at a relative path of ../lib/ld
-const char ld_path[] = {"/../lib/ld"};
+const char ld_path[] = {"/../lib/ld-linux-x86-64.so.2"};
 // the dynamically linked binary that is shimmed will be located at ../dynbin/<binary name>
 const char dynbin_path[] = {"/../dynbin"};
 
