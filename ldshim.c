@@ -35,19 +35,24 @@ int main(int argc, char *argv[]) {
     }
 
     // assemble a new argv 
-    char *new_argv[argc+2];
+    char *new_argv[argc+4];
 
     // by convention, argv[0] is the invocation of this binary
     new_argv[0] = argv[0];
 
+    // set library path to relative path. in practice, this becomes /path/to/executable/../lib.
+    // note: $ORIGIN is *not* an environment variable, it is a special symbol parsed by ld
+    new_argv[1] = "--library-path";
+    new_argv[2] = "$ORIGIN/../lib";
+
     // argv[1] will be the binary we want to execute with ld
-    new_argv[1] = exe;
+    new_argv[3] = exe;
 
     // copy the remaining args
     for (int i=1; i < argc; i++) {
-        new_argv[i+1] = argv[i];
+        new_argv[i+3] = argv[i];
     }
-    new_argv[argc+1] = NULL;
+    new_argv[argc+3] = NULL;
 
     // assemble the path to our ld 
     rc = snprintf(ld, sizeof(exe), "%s%s", exe_path, ld_path);
