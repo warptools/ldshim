@@ -25,3 +25,7 @@ Use `make` to build with GCC. This will create a static `ldshim` binary.
 3. Place a copy of ldshim at `bin/bash`
 4. Place a dynamic linker at `lib/ld-linux-x86-64.so.2`
 5. Running the ldshim at `bin/bash` will invoke `dynbin/bash` using the dynamic linker at `lib/ld-linux-x86-64.so.2`
+
+## License
+
+SPDX-License-Identifier: Apache-2.0 OR MIT
